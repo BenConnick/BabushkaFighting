@@ -6,10 +6,10 @@ public class Player : MonoBehaviour {
 
     public HingeJoint2D armJoint;
     public bool player2;
-    public Bag bag;
+    public Bag OpponentBag;
 	// Use this for initialization
 	void Start () {
-        bag.SetCallback(TakeDamange);
+        OpponentBag.SetCallback(TakeDamange);
 	}
 
     // Update is called once per frame
@@ -36,6 +36,7 @@ public class Player : MonoBehaviour {
     private void TakeDamange(float damage)
     {
         int damageTaken = Mathf.FloorToInt(damage / 20f);
-        print("Player " + (player2 ? "1" : "2") + " takes " + damageTaken + " damage!");
+        Manager.Inst.ShowDamageText(damageTaken, transform.position + Vector3.up * 10f);
+        //print("Player " + (player2 ? "1" : "2") + " takes " + damageTaken + " damage!");
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour {
-
     private static Manager inst;
     public static Manager Inst
     {
@@ -12,6 +11,10 @@ public class Manager : MonoBehaviour {
             return inst;
         }
     }
+
+    #region inspector
+    public DamageText damagePrefab;
+    #endregion
 
     public bool Paused { get; set; }
 
@@ -26,4 +29,11 @@ public class Manager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void ShowDamageText(int amount, Vector3 position)
+    {
+        DamageText t = GameObject.Instantiate(damagePrefab);
+        t.transform.position = position;
+        t.SetValue(amount);
+    }
 }
