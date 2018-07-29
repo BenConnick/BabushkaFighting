@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour {
     private static Manager inst;
@@ -14,6 +13,9 @@ public class Manager : MonoBehaviour {
 
     #region inspector
     public DamageText damagePrefab;
+    public Player p1;
+    public Player p2;
+    public HUD hud;
     #endregion
 
     public bool Paused { get; set; }
@@ -33,7 +35,17 @@ public class Manager : MonoBehaviour {
     public void ShowDamageText(int amount, Vector3 position)
     {
         DamageText t = GameObject.Instantiate(damagePrefab);
-        t.transform.position = position;
+        t.transform.position = position + Vector3.back * 5;
         t.SetValue(amount);
+    }
+
+    public void UpdateUI()
+    {
+        hud.UpdateUI();
+    }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene(0);
     }
 }

@@ -8,6 +8,7 @@ public class Bag : MonoBehaviour {
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        print(collision.gameObject.name);
         if (collision.gameObject.tag != "Player") return;
         if (hitCallback != null) hitCallback.Invoke(rbody.velocity.magnitude);
     }
