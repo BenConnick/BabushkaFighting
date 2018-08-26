@@ -22,6 +22,17 @@ public class CreatePlayer2 : MonoBehaviour {
         p.transform.localScale = new Vector3(-1, 1, 1);
         gameObject.name = "Player 2";
         SetLayer();
+        transform.position = new Vector3(-transform.position.x, transform.position.y, transform.position.z);
+        FindObjectOfType<Manager>().p2 = p;
+        Player[] players = FindObjectsOfType<Player>();
+        foreach (var player in players)
+        {
+            if (player.player2) continue;
+            p.Opponent = player;
+            player.Opponent = p;
+            break;
+        }
+       
         DestroyImmediate(this);
 	}
 

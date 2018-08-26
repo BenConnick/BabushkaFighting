@@ -10,7 +10,7 @@ public class Bag : MonoBehaviour {
     {
         print(collision.gameObject.name);
         if (collision.gameObject.tag != "Player") return;
-        if (hitCallback != null) hitCallback.Invoke(rbody.velocity.magnitude);
+        if (hitCallback != null) hitCallback.Invoke(10);
     }
 
     public void SetCallback(Action<float> callback)

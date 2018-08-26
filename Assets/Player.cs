@@ -13,13 +13,15 @@ public class Player : MonoBehaviour {
     public Player Opponent;
     public SpriteRenderer bodySprite;
     public SpriteRenderer armSprite;
-    public float armPower = 100f;
+    public Transform armPivot;
+    public float armPower = 1000f;
     
     private Color bodyColor;
     private Color handbagColor; // separate for now
     private float invincibleEndTime = 0;
     private float flickerTime = 0.1f;
     private int hp = MAX_HP;
+    private Vector2 prevDir = Vector2.zero;
 
 	// Use this for initialization
 	void Start () {
@@ -46,22 +48,21 @@ public class Player : MonoBehaviour {
 
     void HandleInput()
     {
-        float h = Input.GetAxisRaw(player2 ? "P2" : "P1");
-        ApplyTorque(h * armPower);
-    }
-
-    private void ApplyTorque(float torque)
-    {
-        armJoint.useMotor = true;
-        var motor = armJoint.motor;
-        motor.motorSpeed = torque;
-        armJoint.motor = motor;
+        float h = Input.GetAxisRaw(player2 ? "P2_Horizontal" : "P1_Horizontal");
+        if (player2) h = -h;
+        float v = Input.GetAxisRaw(player2 ? "P2_Vertical" : "P1_Vertical");
+        Vector2 dir = new Vector2(h, v);
+        if (dir.sqrMagnitude == 0) dir = prevDir;
+        prevDir = dir;
+        float a = Vector2.Angle(dir, Vector2.up);
+        if (dir.x > 0) a = 360-a;
+        armPivot.transform.localRotation = Quaternion.Lerp(armPivot.localRotation, Quaternion.AngleAxis(a, Vector3.forward), Time.deltaTime * 12);
     }
 
     public void TakeDamange(float damage)
     {
         if (invincibleEndTime > Time.time) return;
-        int damageTaken = Mathf.FloorToInt(damage / 10f);
+        int damageTaken = Mathf.FloorToInt(damage);
         Manager.Inst.ShowDamageText(damageTaken, transform.position + Vector3.up * 10f);
         if (damageTaken <= 0) return;
         invincibleEndTime = Time.time + INVINCIBLE_DURATION;
